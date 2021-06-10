@@ -1,0 +1,92 @@
+[gd_scene load_steps=24 format=2]
+
+[ext_resource path="res://Scenes/Mage.tscn" type="PackedScene" id=1]
+[ext_resource path="res://AngryMob .gd" type="Script" id=2]
+[ext_resource path="res://Sprits/Дракон/В право/4.png" type="Texture" id=3]
+[ext_resource path="res://Sprits/Дракон/В право/5.png" type="Texture" id=4]
+[ext_resource path="res://Sprits/Дракон/Вниз/2.png" type="Texture" id=5]
+[ext_resource path="res://Sprits/Дракон/Вверх/3.png" type="Texture" id=6]
+[ext_resource path="res://Sprits/Дракон/Вверх/6.png" type="Texture" id=7]
+[ext_resource path="res://Sprits/Дракон/Вниз/5.png" type="Texture" id=8]
+[ext_resource path="res://Sprits/Дракон/В право/1.png" type="Texture" id=9]
+[ext_resource path="res://Sprits/Дракон/Вниз/4.png" type="Texture" id=10]
+[ext_resource path="res://Sprits/Дракон/В право/2.png" type="Texture" id=11]
+[ext_resource path="res://Sprits/Дракон/В право/3.png" type="Texture" id=12]
+[ext_resource path="res://Sprits/Дракон/Вверх/1.png" type="Texture" id=13]
+[ext_resource path="res://Sprits/Дракон/Вверх/4.png" type="Texture" id=14]
+[ext_resource path="res://Sprits/Дракон/Вверх/5.png" type="Texture" id=15]
+[ext_resource path="res://Sprits/Дракон/Вверх/2.png" type="Texture" id=16]
+[ext_resource path="res://Sprits/Дракон/Вниз/3.png" type="Texture" id=17]
+[ext_resource path="res://Sprits/Дракон/Вниз/1.png" type="Texture" id=18]
+[ext_resource path="res://Sprits/Дракон/Вниз/6.png" type="Texture" id=19]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 18 ), ExtResource( 5 ), ExtResource( 17 ), ExtResource( 10 ), ExtResource( 8 ), ExtResource( 19 ), ExtResource( 8 ), ExtResource( 10 ), ExtResource( 17 ), ExtResource( 5 ) ],
+"loop": true,
+"name": "Idle",
+"speed": 8.0
+}, {
+"frames": [ ExtResource( 13 ), ExtResource( 16 ), ExtResource( 6 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 7 ), ExtResource( 15 ), ExtResource( 14 ), ExtResource( 6 ), ExtResource( 16 ) ],
+"loop": true,
+"name": "RunUp",
+"speed": 10.0
+}, {
+"frames": [ ExtResource( 9 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 3 ), ExtResource( 12 ), ExtResource( 11 ) ],
+"loop": true,
+"name": "RunRight",
+"speed": 10.0
+}, {
+"frames": [ ExtResource( 18 ), ExtResource( 5 ), ExtResource( 17 ), ExtResource( 10 ), ExtResource( 8 ), ExtResource( 19 ), ExtResource( 8 ), ExtResource( 10 ), ExtResource( 17 ), ExtResource( 5 ) ],
+"loop": true,
+"name": "RunDown",
+"speed": 10.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 17.1901, 6.31041 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 17.7597, 10.7247 )
+
+[sub_resource type="CircleShape2D" id=4]
+radius = 32.8159
+
+[node name="AngryMob " instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="Anim" type="AnimatedSprite" parent="." index="0"]
+position = Vector2( -24.2718, -35.8503 )
+frames = SubResource( 1 )
+animation = "Idle"
+frame = 7
+playing = true
+centered = false
+
+[node name="Shape" parent="." index="1"]
+position = Vector2( 16.6453, 10.3042 )
+shape = SubResource( 2 )
+
+[node name="HP_bar" parent="." index="2"]
+margin_left = -15.5728
+margin_top = -9.12947
+margin_right = 48.4272
+margin_bottom = 1.87053
+
+[node name="StandingTimer" type="Timer" parent="." index="3"]
+
+[node name="BiteCooldown" type="Timer" parent="." index="4"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox" index="0"]
+position = Vector2( -0.56958, -5.83822 )
+shape = SubResource( 3 )
+
+[node name="BiteArea" type="Area2D" parent="." index="6"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BiteArea" index="0"]
+position = Vector2( 15.7402, 9.74203 )
+shape = SubResource( 4 )
+[connection signal="timeout" from="StandingTimer" to="." method="_on_StandingTimer_timeout"]
+[connection signal="timeout" from="BiteCooldown" to="." method="_on_BiteCooldown_timeout"]
+[connection signal="area_entered" from="BiteArea" to="." method="_on_BiteArea_area_entered"]
+[connection signal="area_exited" from="BiteArea" to="." method="_on_BiteArea_area_exited"]
